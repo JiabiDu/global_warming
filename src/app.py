@@ -10,7 +10,8 @@ C=np.load(npz)
 lon=C['lon']
 lat=C['lat']
 sst=C['sst_yearly']
-warming=np.load('../npz/warming.npz')['slopes']; warming[warming==0]=np.nan
+D=np.load('../npz/warming.npz'); warming=D['slopes']; warming[warming==0]=np.nan
+wlon,wlat=D['lon'],D['lat']
 years = np.arange(1982, 2023)
 
 # Initialize Dash app
@@ -63,7 +64,7 @@ app.layout = html.Div([
 
 # if receiving any inputs in any of the three inputs, update the plot. 
 def update_global_plot(colormap, zmin, zmax):
-    fig = go.Figure(data=go.Heatmap(z=warming, x=lon, y=lat, colorscale=colormap, zmin=zmin, zmax=zmax))
+    fig = go.Figure(data=go.Heatmap(z=warming, x=wlon, y=wlat, colorscale=colormap, zmin=zmin, zmax=zmax))
     fig.update_layout(title={'text':'Global Warming Map','font': {'size': 20},'x': 0.5,  # Center the title
     'xanchor': 'center'}, xaxis_title='Longitude', yaxis_title='Latitude')
     return fig
@@ -83,8 +84,8 @@ def update_time_series(clickData,dlon,dlat):
     lon_idx = np.abs(lon - clicked_x).argmin()
     lat_idx = np.abs(lat - clicked_y).argmin()
     
-    sst_time_series = sst[:, max([0,lat_idx-int(dlat*2)]):min([lat_idx+1+int(dlat*2),len(lat)]), max([0,lon_idx-int(dlon*2)]):min([lon_idx+1+int(dlon*2),len(lon)])]
-    sst_time_series=sst_time_series.mean(axis=(1,2))
+    sst_time_series = sst[:, max([0,lat_idx-int(dlat/2)]):min([lat_idx+1+int(dlat/2),len(lat)]), max([0,lon_idx-int(dlon/2)]):min([lon_idx+1+int(dlon/2),len(lon)])]
+    sst_time_series=np.nanmean(sst_time_series,axis=(1,2))
     fig2 = go.Figure(data=go.Scatter(x=years, y=sst_time_series, mode='lines+markers',
                                      line=dict(color='black'),
                                      marker=dict(size=20)))

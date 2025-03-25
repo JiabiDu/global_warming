@@ -15,4 +15,4 @@ for ilon in range(len(nlon)):
     for ilat in range(len(nlat)):
         nsst[:,ilat,ilon]=np.nanmean(sst[:,ilat*4:(ilat+1)*4,ilon*4:(ilon+1)*4],axis=(1,2))
         
-np.savez('../npz/sst_yearly_mean_1982_2023.npz',lon=nlon,lat=nlat,sst_year=nsst)
+np.savez('../npz/sst_yearly_mean_1982_2023.npz',lon=nlon,lat=nlat,sst_yearly=nsst)
