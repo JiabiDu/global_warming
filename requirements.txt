@@ -3,3 +3,4 @@ numpy==2.2.4
 gunicorn
 pandas
 dash-tools
+setuptools>=58.0.4
