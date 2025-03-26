@@ -3,7 +3,6 @@ import dash
 from dash import dcc, html, Input, Output
 import plotly.graph_objects as go
 import numpy as np
-import os
 
 # Sample data generation (replace these with your actual data)
 npz='npz/sst_yearly_mean_1982_2023.npz'
@@ -99,7 +98,7 @@ def update_time_series(clickData,dlon,dlat):
     return fig2
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 10000)))
+    app.run(host='0.0.0.0')
     #app.run()
     
 #after run the script; open your internet browser and go to: http://127.0.0.1:8050
