@@ -98,7 +98,7 @@ def update_time_series(clickData,dlon,dlat):
     return fig2
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0',port=10000)
     #app.run()
     
 #after run the script; open your internet browser and go to: http://127.0.0.1:8050
