@@ -20,21 +20,21 @@ server = app.server
 
 # Layout
 app.layout = html.Div([
-    html.H1("Global Warming Dashboard", style={'textAlign': 'center'}),
+    html.H1("Global Warming Dashboard  (developed by TAMUG)", style={'textAlign': 'center'}),
 
     html.Div([
     # Colormap selection input box
     html.Label("Enter Colormap:", style={'fontSize': '20px'}),
-    dcc.Input(id='colormap-input', type='text', value='RdBu_r', style={'fontSize': '20px','width': '150px'}),
+    dcc.Input(id='colormap-input', type='text', value='RdBu_r', style={'fontSize': '20px','width': '100px'}),
 
     # zmin and zmax input fields
     html.Label("zmin:", style={'fontSize': '20px'}),
-    dcc.Input(id='zmin-input', type='number', value=-0.05, style={'fontSize': '15px','width': '70px'}),
+    dcc.Input(id='zmin-input', type='number', value=-0.05, step=0.01, style={'fontSize': '15px','width': '70px'}),
 
     html.Label("zmax:", style={'fontSize': '20px'}),
-    dcc.Input(id='zmax-input', type='number', value=0.05, style={'fontSize': '15px','width': '70px'}),
+    dcc.Input(id='zmax-input', type='number', value=0.05, step=0.01, style={'fontSize': '15px','width': '70px'}),
     
-    html.Label(u"Δdlon:", style={'fontSize': '20px'}),
+    html.Label(u"Δlon:", style={'fontSize': '20px'}),
     dcc.Input(id='dlon-input', type='number', value=5, style={'fontSize': '15px','width': '70px'}),
     
     html.Label(u"Δlat:", style={'fontSize': '20px'}),
@@ -42,9 +42,9 @@ app.layout = html.Div([
     ], style={'display': 'flex', 'justifyContent': 'center'}),
     
     html.Div([
-    dcc.Graph(id='global-plot', style={'height': '40vw', 'width': '60vw'}),
-    dcc.Graph(id='time-series-plot', style={'height': '30vw', 'width': '60vw'})
-], style={'display': 'flex', 'flexDirection': 'column', 'alignItems': 'center'})
+    dcc.Graph(id='global-plot', style={'height': '40vw', 'width': '50vw'}),
+    dcc.Graph(id='time-series-plot', style={'height': '40vw', 'width': '50vw'})
+], style={'display': 'flex', 'flexDirection': 'row', 'alignItems': 'center'})
     
     # Global Warming Plot
     #dcc.Graph(id='global-plot', style={'width': '60vw', 'height': '40vw','display': 'flex', 'justifyContent': 'center'}),
@@ -65,7 +65,7 @@ app.layout = html.Div([
 # if receiving any inputs in any of the three inputs, update the plot. 
 def update_global_plot(colormap, zmin, zmax):
     fig = go.Figure(data=go.Heatmap(z=warming, x=wlon, y=wlat, colorscale=colormap, zmin=zmin, zmax=zmax))
-    fig.update_layout(title={'text':'Global Warming Map','font': {'size': 20},'x': 0.5,  # Center the title
+    fig.update_layout(title={'text':'Global Warming (\u00b0C/yr)','font': {'size': 20},'x': 0.5,'y':0.9,  # Center the title
     'xanchor': 'center'}, xaxis_title='Longitude', yaxis_title='Latitude')
     return fig
 
@@ -89,8 +89,8 @@ def update_time_series(clickData,dlon,dlat):
     fig2 = go.Figure(data=go.Scatter(x=years, y=sst_time_series, mode='lines+markers',
                                      line=dict(color='black'),
                                      marker=dict(size=20)))
-    fig2.update_layout(title={'text':f'SST Time Series at ({clicked_x:.2f}, {clicked_y:.2f}) with Δlon={dlon:.1f} and Δlat={dlat:.1f}',
-                              'font': {'size': 20},'x': 0.5,  # Center the title
+    fig2.update_layout(title={'text':f'SST at ({clicked_x:.1f}, {clicked_y:.1f}) avg over Δlon={dlon:.1f} and Δlat={dlat:.1f}',
+                              'font': {'size': 20},'x': 0.5, 'y':0.9,  # Center the title
                               'xanchor': 'center'},
                        xaxis_title='Year',
                        yaxis_title='SST (\u00b0C)')
